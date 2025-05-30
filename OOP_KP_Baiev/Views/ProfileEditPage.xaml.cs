@@ -11,7 +11,12 @@ namespace OOP_KP_Baiev.Views
     {
         private readonly Frame _frame;
         private User _userToEdit; 
-        private string _initialAvatarPath; 
+        private string _initialAvatarPath;
+        private readonly Dictionary<string, List<string>> _countryCityMap = new Dictionary<string, List<string>> {
+        { "Україна", new List<string> { "Київ", "Харків", "Львів" } },
+        { "Польща", new List<string> { "Варшава", "Краків", "Гданськ" } },
+        { "Німеччина", new List<string> { "Берлін", "Мюнхен", "Гамбург" } }
+            };
 
         public ProfileEditPage(Frame frame) : this(frame, App.Current.Properties["CurrentUser"] as User)
         {
@@ -22,13 +27,13 @@ namespace OOP_KP_Baiev.Views
             InitializeComponent();
             _frame = frame;
             _userToEdit = user;
-
+            
             if (_userToEdit == null)
             {
                 MessageBox.Show("Помилка: користувач для редагування не визначений.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            
             LoadProfileData();
         }
 
@@ -36,13 +41,31 @@ namespace OOP_KP_Baiev.Views
         {
             FirstNameBox.Text = _userToEdit.FirstName ?? "";
             LastNameBox.Text = _userToEdit.LastName ?? "";
-            CountryBox.Text = _userToEdit.Country ?? "";
-            CityBox.Text = _userToEdit.City ?? "";
             DescriptionBox.Text = _userToEdit.Description ?? "";
             BirthDatePicker.SelectedDate = _userToEdit.BirthDate;
+            CountryComboBox.ItemsSource = _countryCityMap.Keys;
+
+            if (!string.IsNullOrEmpty(_userToEdit.Country) && _countryCityMap.ContainsKey(_userToEdit.Country))
+            {
+                CountryComboBox.SelectedItem = _userToEdit.Country;
+                CityComboBox.ItemsSource = _countryCityMap[_userToEdit.Country];
+
+                if (_countryCityMap[_userToEdit.Country].Contains(_userToEdit.City))
+                {
+                    CityComboBox.SelectedItem = _userToEdit.City;
+                }
+            }
 
             _initialAvatarPath = _userToEdit.AvatarPath; 
             LoadAvatarImage(_userToEdit.AvatarPath);
+        }
+        private void CountryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CountryComboBox.SelectedItem is string selectedCountry && _countryCityMap.ContainsKey(selectedCountry))
+            {
+                CityComboBox.ItemsSource = _countryCityMap[selectedCountry];
+                CityComboBox.SelectedIndex = 0;
+            }
         }
 
         private void LoadAvatarImage(string path)
@@ -79,6 +102,14 @@ namespace OOP_KP_Baiev.Views
             {
                 AvatarImage.Source = null;
             }
+        }
+        private string Capitalize(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            input = input.Trim().ToLower();
+            return char.ToUpper(input[0]) + input.Substring(1);
         }
 
 
@@ -120,22 +151,22 @@ namespace OOP_KP_Baiev.Views
         {
             if (_userToEdit == null) return;
 
-            if (string.IsNullOrWhiteSpace(FirstNameBox.Text) || FirstNameBox.Text.Length < 2)
+            if (string.IsNullOrWhiteSpace(FirstNameBox.Text) || FirstNameBox.Text.Length < 2 || FirstNameBox.Text.Any(char.IsDigit))
             {
-                MessageBox.Show("Ім'я повинно містити щонайменше 2 символи.", "Помилка валідації", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ім'я повинно містити щонайменше 2 символи і не містити цифр.", "Помилка валідації", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(LastNameBox.Text) || LastNameBox.Text.Length < 2)
+            if (string.IsNullOrWhiteSpace(LastNameBox.Text) || LastNameBox.Text.Length < 2 || LastNameBox.Text.Any(char.IsDigit))
             {
-                MessageBox.Show("Прізвище повинно містити щонайменше 2 символи.", "Помилка валідації", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Прізвище повинно містити щонайменше 2 символи і не містити цифр.", "Помилка валідації", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (BirthDatePicker.SelectedDate.HasValue)
             {
-                if (BirthDatePicker.SelectedDate.Value < new DateTime(1930, 1, 1) ||
-                    BirthDatePicker.SelectedDate.Value > DateTime.Now.AddYears(-5))
+                if (BirthDatePicker.SelectedDate.Value < new DateTime(1950, 1, 1) ||
+                    BirthDatePicker.SelectedDate.Value > DateTime.Now.AddYears(-16))
                 {
                     MessageBox.Show("Вказана некоректна дата народження.", "Помилка валідації", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -153,24 +184,35 @@ namespace OOP_KP_Baiev.Views
                 return;
             }
 
-            _userToEdit.FirstName = FirstNameBox.Text.Trim();
-            _userToEdit.LastName = LastNameBox.Text.Trim();
-            _userToEdit.Country = CountryBox.Text.Trim();
-            _userToEdit.City = CityBox.Text.Trim();
+            _userToEdit.FirstName = Capitalize(FirstNameBox.Text);
+            _userToEdit.LastName = Capitalize(LastNameBox.Text);
             _userToEdit.Description = DescriptionBox.Text.Trim();
             _userToEdit.BirthDate = BirthDatePicker.SelectedDate;
+            if (CountryComboBox.SelectedItem is string selectedCountry)
+                _userToEdit.Country = selectedCountry;
+
+            if (CityComboBox.SelectedItem is string selectedCity)
+                _userToEdit.City = selectedCity;
 
             if (AvatarImage.Tag is string newAvatarPath &&
-                !string.IsNullOrEmpty(newAvatarPath) &&
-                newAvatarPath != _initialAvatarPath)
+            !string.IsNullOrEmpty(newAvatarPath) &&
+            newAvatarPath != _initialAvatarPath)
             {
                 _userToEdit.AvatarPath = newAvatarPath;
+            }
+
+            string defaultAvatarPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "default_avatar.png");
+            if (string.IsNullOrEmpty(_userToEdit.AvatarPath) || !File.Exists(_userToEdit.AvatarPath))
+            {
+                _userToEdit.AvatarPath = defaultAvatarPath;
             }
 
             if (!AccountManager.Users.Any(u => u.Id == _userToEdit.Id))
             {
                 AccountManager.Users.Add(_userToEdit);
             }
+
+
 
             AccountManager.SaveData();
 
@@ -180,5 +222,6 @@ namespace OOP_KP_Baiev.Views
 
             _frame?.Navigate(new AccountPage(_frame));
         }
+    
     }
 }

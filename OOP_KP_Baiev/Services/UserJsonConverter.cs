@@ -56,12 +56,10 @@ namespace OOP_KP_Baiev.Services
                     case "Admin":
                         return JsonSerializer.Deserialize<Admin>(rawText, options);
                     default:
-                        // Если тип не определен или неизвестен, пытаемся определить по полям или выбрасываем исключение
                         if (doc.RootElement.TryGetProperty("CreatedProjectIds", out _))
                             return JsonSerializer.Deserialize<Customer>(rawText, options);
                         if (doc.RootElement.TryGetProperty("AppliedProjectIds", out _))
                             return JsonSerializer.Deserialize<Freelancer>(rawText, options);
-                        // Добавьте логику для Admin, если нужно
 
                         throw new NotSupportedException($"UserType '{userType}' is not supported or cannot be determined.");
                 }

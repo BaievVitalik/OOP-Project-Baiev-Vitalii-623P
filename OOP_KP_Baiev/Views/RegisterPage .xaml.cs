@@ -1,6 +1,7 @@
 ﻿using OOP_KP_Baiev.Models;
 using OOP_KP_Baiev.Services;
 using System.Windows;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace OOP_KP_Baiev.Views
@@ -22,6 +23,26 @@ namespace OOP_KP_Baiev.Views
             string password = PasswordBox.Password;
             string confirmPassword = ConfirmPasswordBox.Password;
 
+            Regex latinOnlyRegex = new Regex("^[a-zA-Z0-9@._]+$");
+
+            if (!latinOnlyRegex.IsMatch(login))
+            {
+                MessageBox.Show("Логін повинен містити лише латинські літери, цифри або символи '@', '.', '_'.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!latinOnlyRegex.IsMatch(email))
+            {
+                MessageBox.Show("Email повинен містити лише латинські літери, цифри або символи '@', '.', '_'.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!latinOnlyRegex.IsMatch(password))
+            {
+                MessageBox.Show("Пароль повинен містити лише латинські літери, цифри або символи '@', '.', '_'.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
@@ -38,6 +59,12 @@ namespace OOP_KP_Baiev.Views
             if (password.StartsWith("_") || password.Length < 5 || password.Length > 30)
             {
                 MessageBox.Show("Пароль повинен містити від 5 до 30 символів і не починатися з символу '_'.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (email.StartsWith("_") || password.Length < 5 || password.Length > 30)
+            {
+                MessageBox.Show("Пошта повинна містити від 5 до 30 символів і не починатися з символу '_'.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

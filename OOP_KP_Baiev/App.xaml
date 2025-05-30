@@ -1,9 +1,9 @@
 ﻿<Application x:Class="OOP_KP_Baiev.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OOP_KP_Baiev"
+             xmlns:local="clr-namespace:OOP_KP_Baiev.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

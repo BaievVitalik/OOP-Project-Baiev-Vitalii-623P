@@ -2,6 +2,7 @@
 using OOP_KP_Baiev.Services;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace OOP_KP_Baiev.Views
 {
@@ -20,6 +21,8 @@ namespace OOP_KP_Baiev.Views
             if (currentUser != null)
             {
                 _currentUserId = currentUser.Id;
+
+                ProjectManager.Load();
 
                 if (currentUser is Customer || currentUser is Admin)
                 {
@@ -57,9 +60,22 @@ namespace OOP_KP_Baiev.Views
 
         private void ShowProjectsByStatus(ProjectStatus targetStatus)
         {
-            var filteredProjects = _allUserProjects
-                .Where(p => p.Status == targetStatus)
-                .ToList();
+            List<Project> filteredProjects;
+
+            if (targetStatus == ProjectStatus.Active)
+            {
+                filteredProjects = _allUserProjects
+                    .Where(p => p.Status == ProjectStatus.Active ||
+                                p.Status == ProjectStatus.Pending ||
+                                p.Status == ProjectStatus.InProgress)
+                    .ToList();
+            }
+            else
+            {
+                filteredProjects = _allUserProjects
+                    .Where(p => p.Status == targetStatus)
+                    .ToList();
+            }
 
             ProjectList.ItemsSource = filteredProjects;
 
@@ -68,14 +84,50 @@ namespace OOP_KP_Baiev.Views
                 : Visibility.Visible;
         }
 
-        private void Active_Click(object sender, RoutedEventArgs e) => ShowProjectsByStatus(ProjectStatus.Active);
+        private void Active_Click(object sender,  RoutedEventArgs e) => ShowProjectsByStatus(ProjectStatus.Active);
         private void Completed_Click(object sender, RoutedEventArgs e) => ShowProjectsByStatus(ProjectStatus.Completed);
-
         private void GoToMain_Click(object sender, RoutedEventArgs e)
         {
             if (_frame != null)
             {
-                _frame.Navigate(new MainPage(_frame));
+                _frame.GoBack();
+            }
+        }
+        private void Title_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is TextBlock tb)
+                tb.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void Title_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is TextBlock tb)
+                tb.TextDecorations = null;
+        }
+
+        private void Title_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBlock tb && tb.DataContext is Project project)
+            {
+                _frame.Navigate(new ProjectProfilePage(project.Id, _frame));
+            }
+        }
+        private void AddProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentUser = App.Current.Properties["CurrentUser"] as User;
+            if (currentUser == null)
+            {
+                MessageBox.Show("Користувач не знайдений.");
+                return;
+            }
+
+            if (currentUser is Customer)
+            {
+                NavigationService?.Navigate(new CreateProjectPage(_frame));
+            }
+            else if (currentUser is Freelancer)
+            {
+                NavigationService?.Navigate(new ProjectListPage(currentUser, _frame));
             }
         }
     }

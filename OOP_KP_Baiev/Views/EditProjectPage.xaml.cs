@@ -1,20 +1,22 @@
 ﻿using OOP_KP_Baiev.Models;
 using OOP_KP_Baiev.Services;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace OOP_KP_Baiev.Views
 {
-    public partial class EditProjectWindow : Window
+    public partial class EditProjectPage : Page
     {
+        private readonly Frame _frame;
         private readonly Project _project;
-        private readonly AdminPanelPage _adminPanelPage;
 
-        public EditProjectWindow(Project project, AdminPanelPage adminPanelPage)
+        public EditProjectPage(Project project, Frame frame)
         {
             InitializeComponent();
             _project = project;
-            _adminPanelPage = adminPanelPage;
+            _frame = frame;
 
             LoadProjectData();
         }
@@ -24,8 +26,6 @@ namespace OOP_KP_Baiev.Views
             TitleBox.Text = _project.Title;
             DescriptionBox.Text = _project.Description;
             PriceBox.Text = _project.Price.ToString(CultureInfo.InvariantCulture);
-            StatusComboBox.ItemsSource = Enum.GetValues(typeof(ProjectStatus));
-            StatusComboBox.SelectedItem = _project.Status;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -52,41 +52,55 @@ namespace OOP_KP_Baiev.Views
                 return;
             }
 
-            if (!decimal.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
+            if (!decimal.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newPrice))
             {
                 MessageBox.Show("Введіть коректну числову ціну.");
                 return;
             }
 
-            if (price < 200 || price > 100000)
+            if (newPrice < 200 || newPrice > 100000)
             {
-                MessageBox.Show("Ціна повинна бути від 200 до 100_000.");
+                MessageBox.Show("Ціна повинна бути від 200 до 100 000.");
                 return;
             }
 
-            if (StatusComboBox.SelectedItem is not ProjectStatus selectedStatus)
+            var currentUser = Application.Current.Properties["CurrentUser"] as Customer;
+            if (currentUser == null)
             {
-                MessageBox.Show("Будь ласка, оберіть статус проєкту.");
+                MessageBox.Show("Не вдалося отримати інформацію про користувача.");
                 return;
             }
+
+            decimal oldPrice = _project.Price;
+            decimal priceDifference = newPrice - oldPrice;
+
+            if (priceDifference > 0 && currentUser.Balance < priceDifference)
+            {
+                MessageBox.Show("Недостатньо коштів для оновлення ціни проєкту.");
+                return;
+            }
+
+            currentUser.Balance -= priceDifference;
 
             var existingProject = ProjectManager.Projects.FirstOrDefault(p => p.Id == _project.Id);
             if (existingProject != null)
             {
                 existingProject.Title = title;
                 existingProject.Description = description;
-                existingProject.Price = price;
-                existingProject.Status = selectedStatus;
+                existingProject.Price = newPrice;
+
                 ProjectManager.Save();
+                AccountManager.SaveData(); 
             }
 
             MessageBox.Show("Проєкт оновлено.");
-            _adminPanelPage.RefreshUsersList();
-            Close();
+            _frame.Navigate(new ProjectProfilePage(_project.Id, _frame));
         }
+
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
         }
     }
 }

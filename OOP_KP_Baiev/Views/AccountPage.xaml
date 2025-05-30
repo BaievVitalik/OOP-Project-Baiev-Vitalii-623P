@@ -6,7 +6,8 @@
 
     <Grid>
 
-        <Border Width="600"
+        <Border Width="900"
+                Height="600"
                 Background="White"
                 CornerRadius="12"
                 Padding="20"
@@ -28,8 +29,8 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Content="На головну"
-                            Click="GoToMain_Click"
+                    <Button Content="Назад"
+                            Click="GoBack_Click"
                             Background="#4CAF50"
                             Foreground="White"
                             Padding="8,5"
@@ -37,7 +38,7 @@
                             BorderThickness="0"
                             Cursor="Hand"
                             Width="120"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left" Margin="0,0,0,23">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}"
@@ -49,83 +50,107 @@
                         </Button.Template>
                     </Button>
 
-                    <Button Content="Вийти з акаунта"
-                            Click="Logout_Click"
-                            Background="#F44336"
-                            Foreground="White"
-                            Padding="8,5"
-                            FontWeight="SemiBold"
-                            BorderThickness="0"
-                            Cursor="Hand"
-                            Width="120"
-                            HorizontalAlignment="Right"
-                            Grid.Column="1">    
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
-                        CornerRadius="8"
-                        Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </Grid>
-
-                <DockPanel Grid.Row="1" LastChildFill="True" Margin="0,10,0,0">
-                    <Image x:Name="AvatarImage"
-                           Width="125" Height="125"
-                           Margin="0,0,30,0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Stretch="Uniform"
-                           ClipToBounds="True"
-                           SnapsToDevicePixels="True"
-                           DockPanel.Dock="Left"/>
-                    <StackPanel>
-                        <TextBlock Text="Мій профіль"
-                                   FontSize="26"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,20"
-                                   Foreground="#1F2937"
-                                   HorizontalAlignment="Left"/>
-
-                        <TextBlock x:Name="FullNameText" FontSize="18" FontWeight="SemiBold" Foreground="#111827" Margin="0,5"/>
-                        <TextBlock x:Name="UsernameText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
-                        <TextBlock x:Name="RoleText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
-                        <TextBlock x:Name="BirthDateText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
-                        <TextBlock x:Name="LocationText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
-
-                        <ScrollViewer Height="100"
-                                      VerticalScrollBarVisibility="Auto"
-                                      Margin="0,10,0,20">
-                            <TextBlock x:Name="DescriptionText"
-                                       TextWrapping="Wrap"
-                                       FontSize="14"
-                                       Foreground="#374151"/>
-                        </ScrollViewer>
-
-                        <Button Content="Редагувати профіль"
-                                Click="EditProfile_Click"
-                                Background="#2196F3"
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button Content="Вийти з акаунта"
+                                Click="Logout_Click"
+                                Background="#F44336"
                                 Foreground="White"
-                                Padding="10"
+                                Padding="8,5"
                                 FontWeight="SemiBold"
                                 BorderThickness="0"
                                 Cursor="Hand"
-                                Width="160">
+                                Width="120"
+                                HorizontalAlignment="Right">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}"
-                                            CornerRadius="8"
-                                            Padding="{TemplateBinding Padding}">
+                        CornerRadius="8"
+                        Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <TextBlock x:Name="BalanceText"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="#10B981"
+                                   Margin="0,10,13,0"
+                                   HorizontalAlignment="Right"
+                                   Cursor="Hand"
+                                   MouseLeftButtonUp="BalanceText_MouseLeftButtonUp"
+                                   TextDecorations="Underline"/>
+                    </StackPanel>
+
+                </Grid>
+
+                <DockPanel Grid.Row="1" LastChildFill="True" Margin="0,10,0,0">
+                    <StackPanel DockPanel.Dock="Left" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image x:Name="AvatarImage"
+               Width="125" Height="125"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Stretch="Uniform"
+               ClipToBounds="True"
+               SnapsToDevicePixels="True"/>
+
+                        <Button Content="Редагувати профіль"
+                Click="EditProfile_Click"
+                Background="#2196F3"
+                Foreground="White"
+                Padding="10"
+                FontWeight="SemiBold"
+                BorderThickness="0"
+                Cursor="Hand"
+                Width="125" Height="35"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </StackPanel>
+
+                    <StackPanel Margin="20,0,0,0">
+                        <TextBlock Text="Мій профіль"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"
+                   Foreground="#1F2937"
+                   HorizontalAlignment="Left"/>
+
+                        <TextBlock x:Name="FullNameText" FontSize="18" FontWeight="SemiBold" Foreground="#111827" Margin="0,0"/>
+
+                        <TextBlock Text="Логін:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="UsernameText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
+
+                        <TextBlock Text="Роль:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="RoleText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
+
+                        <TextBlock Text="Дата народження:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="BirthDateText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
+
+                        <TextBlock Text="Місцезнаходження:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="LocationText" FontSize="14" Foreground="#4B5563" Margin="0,2"/>
+
+                        <TextBlock Text="Опис:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <ScrollViewer Height="150"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,2,0,0">
+                            <TextBlock x:Name="DescriptionText"
+                       TextWrapping="Wrap"
+                       FontSize="14"
+                       Foreground="#374151"/>
+                        </ScrollViewer>
+                    </StackPanel>
                 </DockPanel>
+
             </Grid>
         </Border>
     </Grid>

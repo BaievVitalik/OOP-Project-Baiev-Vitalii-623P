@@ -1,7 +1,10 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace OOP_KP_Baiev.Views
 {
@@ -47,6 +50,7 @@ namespace OOP_KP_Baiev.Views
             DescriptionText.Text = string.IsNullOrWhiteSpace(_user.Description)
                 ? "Опис відсутній" 
                 : _user.Description;
+            BalanceText.Text = $"Баланс: {_user.Balance:C}";
 
             BitmapImage avatarImageSource = null; 
 
@@ -96,9 +100,22 @@ namespace OOP_KP_Baiev.Views
             _frame.Navigate(new ProfileEditPage(_frame, _user));
         }
 
-        private void GoToMain_Click(object sender, RoutedEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            _frame.Navigate(new MainPage(_frame)); 
+            var backStack = _frame.BackStack.Cast<JournalEntry>();
+            var previousPage = backStack.FirstOrDefault();
+
+            if (_frame.CanGoBack &&
+                previousPage != null &&
+                previousPage.Source != null &&
+                !previousPage.Source.ToString().Contains("ProfileEditPage"))
+            {
+                _frame.GoBack();
+            }
+            else
+            {
+                _frame.Navigate(new MainPage(_frame));
+            }
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -106,5 +123,13 @@ namespace OOP_KP_Baiev.Views
             App.Current.Properties["CurrentUser"] = null;
             _frame.Navigate(new LoginPage(_frame));
         }
+        private void BalanceText_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var window = new FundsWindow(_user);
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
+            LoadUserInfo();
+        }
+
     }
 }

@@ -10,6 +10,7 @@
       Background="#F0F2F5">
 
     <Page.Resources>
+        <conv:StatusToColorConverter x:Key="StatusToColorConverter"/>
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Foreground" Value="White"/>
@@ -55,10 +56,17 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style TargetType="TextBlock" x:Key="HoverUnderlineTextBlockStyle">
+            <Setter Property="TextDecorations" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextDecorations" Value="Underline"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
 
-    <Grid Margin="25">
+    <Grid Margin="25,25,25,2">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -66,7 +74,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,20">
-            <Button Content="На головну" Click="GoToMain_Click" 
+            <Button Content="Назад" Click="GoToMain_Click" 
                     Style="{StaticResource NavButtonStyle}" Background="#6c757d"
                     HorizontalAlignment="Left" Margin="0,0,0,15"/>
             <TextBlock Text="Мої проєкти" FontSize="28" FontWeight="Bold" Foreground="#2E3A59" HorizontalAlignment="Center"/>
@@ -77,7 +85,7 @@
             <Button Content="Завершені" Click="Completed_Click" Style="{StaticResource FilterButtonStyle}" Background="#dc3545"/>
         </StackPanel>
 
-        <ListView Grid.Row="2" x:Name="ProjectList" BorderThickness="0" Background="Transparent" ItemContainerStyle="{StaticResource ProjectItemStyle}">
+        <ListView Grid.Row="1" x:Name="ProjectList" BorderThickness="0" Background="Transparent" ItemContainerStyle="{StaticResource ProjectItemStyle}" Margin="0,64,0,0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Background="White" 
@@ -93,10 +101,21 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                                <TextBlock Text="{Binding Title}" FontSize="20" FontWeight="SemiBold" Foreground="#333" Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding Title}" FontSize="20" FontWeight="SemiBold" Foreground="#333"
+                                   Style="{StaticResource HoverUnderlineTextBlockStyle}" 
+                                   Cursor="Hand" 
+                                   MouseEnter="Title_MouseEnter" 
+                                   MouseLeave="Title_MouseLeave"
+                                   MouseLeftButtonUp="Title_MouseLeftButtonUp"/>
                                 <TextBlock Text="Опис:" FontWeight="Medium" Foreground="#555" Margin="0,0,0,3"/>
-                                <ScrollViewer MaxHeight="80" VerticalScrollBarVisibility="Auto" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="14" Foreground="#666" LineHeight="20"/>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="80">
+                                    <ScrollViewer.Resources>
+                                        <Style TargetType="ScrollBar">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Setter Property="Width" Value="0"/>
+                                        </Style>
+                                    </ScrollViewer.Resources>
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="#374151"/>
                                 </ScrollViewer>
                             </StackPanel>
 
@@ -104,7 +123,7 @@
                                 <TextBlock Text="Статус:" FontWeight="Medium" FontSize="13" Foreground="#555" HorizontalAlignment="Right"/>
                                 <TextBlock Text="{Binding Status}" FontStyle="Italic" Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Right" Margin="0,0,0,10"/>
                                 <TextBlock Text="Вартість:" FontWeight="Medium" FontSize="13" Foreground="#555" HorizontalAlignment="Right"/>
-                                <TextBlock Text="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}" FontSize="18" FontWeight="Bold" Foreground="#007ACC" HorizontalAlignment="Right"/>
+                                <TextBlock Text="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}" FontSize="18" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -116,6 +135,26 @@
                    Grid.Row="2" FontSize="16" Foreground="Gray"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    Visibility="Collapsed"/>
-
+        <Button x:Name="AddProjectButton"
+                Width="60"
+                Height="60"
+                Background="#007bff"
+                Foreground="White"
+                FontSize="42"
+                Content="+"
+                FontWeight="Bold"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,15,15"
+                Click="AddProjectButton_Click"
+                Grid.RowSpan="3">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="34">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </Page>

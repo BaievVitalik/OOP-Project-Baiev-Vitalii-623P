@@ -56,7 +56,7 @@
                 <DropShadowEffect Color="Gray" ShadowDepth="2" BlurRadius="10" Opacity="0.3"/>
             </Border.Effect>
             <StackPanel>
-                <Button Content="На головну" Click="GoToMain_Click"
+                <Button Content="Назад" Click="GoToMain_Click"
                         HorizontalAlignment="Left"
                         Style="{StaticResource PrimaryButton}"
                         Background="#FF6B7280" Foreground="White" 

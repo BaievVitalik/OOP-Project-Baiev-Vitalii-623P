@@ -13,5 +13,6 @@ namespace OOP_KP_Baiev.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string OwnerLogin { get; set; }
         public decimal Price { get; set; }
+        public List<Guid> RespondedFreelancers { get; set; } = new List<Guid>();
     }
-}
+}   

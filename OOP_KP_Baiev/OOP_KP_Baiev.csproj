@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Resources\avatars\standard_user_icon.png" />
     <None Remove="Resources\background.png" />
+    <None Remove="Resources\default_avatar.png" />
     <None Remove="Resources\standard_user_icon.png" />
   </ItemGroup>
 

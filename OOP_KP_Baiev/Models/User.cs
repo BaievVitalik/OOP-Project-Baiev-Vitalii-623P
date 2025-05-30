@@ -14,6 +14,8 @@ public abstract class User : IIdentifiable, IEditableProfile
     public string? City { get; set; }
     public string? Description { get; set; }
     public string? AvatarPath { get; set; }
+    public decimal Balance { get; set; } = 0.0m;
+    public string SavedCardNumber { get; set; }
 
     [JsonPropertyName("UserType")]
     public string Role => UserType();

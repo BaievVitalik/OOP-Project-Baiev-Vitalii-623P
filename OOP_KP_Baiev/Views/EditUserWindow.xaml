@@ -58,6 +58,16 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="ComboBox" x:Key="InputComboBoxStyle">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="BorderBrush" Value="#ccc"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent">
@@ -106,12 +116,12 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Країна:" Style="{StaticResource LabelStyle}"/>
-                            <TextBox x:Name="CountryBox" Style="{StaticResource InputBoxStyle}" />
+                            <ComboBox x:Name="CountryComboBox" Style="{StaticResource InputComboBoxStyle}" SelectionChanged="CountryComboBox_SelectionChanged"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Місто:" Style="{StaticResource LabelStyle}"/>
-                            <TextBox x:Name="CityBox" Style="{StaticResource InputBoxStyle}" />
+                            <ComboBox x:Name="CityComboBox" Style="{StaticResource InputComboBoxStyle}"/>
                         </StackPanel>
                     </Grid>
 

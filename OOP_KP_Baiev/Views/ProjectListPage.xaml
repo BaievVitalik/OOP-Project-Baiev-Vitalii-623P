@@ -1,0 +1,99 @@
+﻿<Page x:Class="OOP_KP_Baiev.Views.ProjectListPage" 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+      xmlns:conv="clr-namespace:OOP_KP_Baiev.Converters" 
+      Title="ProjectListPage" 
+      Background="#F9FAFB">
+    
+    <Page.Resources>
+        <conv:StatusToColorConverter x:Key="StatusToColorConverter"/>
+        <Style TargetType="TextBlock" x:Key="HoverUnderlineTextBlockStyle">
+            <Setter Property="TextDecorations" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextDecorations" Value="Underline"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="20">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Width="auto">
+                <Button Content="Назад" Click="GoToMain_Click" Background="#3B82F6" Foreground="White" Padding="10,6" FontWeight="SemiBold" Width="200" HorizontalAlignment="Left" BorderThickness="0" Cursor="Hand" Margin="0,0,0,20">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBlock Text="Список усіх проєктів" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#1F2937" Margin="0,0,0,30"/>
+                <ListView x:Name="ProjectList" Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,16"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" CornerRadius="12" Padding="20" BorderBrush="#E5E7EB" BorderThickness="1" HorizontalAlignment="Stretch">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.15" Color="Black"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                        <TextBlock Text="{Binding Title}" Style="{StaticResource HoverUnderlineTextBlockStyle}" FontSize="20" FontWeight="SemiBold" Foreground="#111827" Margin="0,0,0,8"
+                                                   Cursor="Hand" TextDecorations="{x:Null}" MouseEnter="Title_MouseEnter" MouseLeave="Title_MouseLeave" 
+                                                   MouseLeftButtonUp="Title_MouseLeftButtonUp"/>
+
+                                        <TextBlock Text="Опис:" FontWeight="Medium" Foreground="#555" Margin="0,0,0,3"/>
+
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="80">
+                                            <ScrollViewer.Resources>
+                                                <Style TargetType="ScrollBar">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                    <Setter Property="Width" Value="0"/>
+                                                </Style>
+                                            </ScrollViewer.Resources>
+                                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="#374151"/>
+                                        </ScrollViewer>
+
+                                        <TextBlock Text="{Binding OwnerLogin, StringFormat=Замовник: {0}}" FontSize="12" Foreground="#9CA3AF" Margin="0,8,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <TextBlock Text="Статус:" FontWeight="Medium" FontSize="13" Foreground="#555" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Status}" 
+                                                   FontStyle="Italic" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="14" 
+                                                   Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" 
+                                                   HorizontalAlignment="Right" Margin="0,0,0,10"/>
+
+                                        <TextBlock Text="Вартість:" FontWeight="Medium" FontSize="13" Foreground="#555" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}" FontSize="18" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="CreateButton" Width="60" Height="60" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Background="#10B981" Foreground="White" FontSize="32" Click="CreateProject_Click" Cursor="Hand" ToolTip="Створити новий проєкт" BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="30">
+                        <TextBlock Text="+" FontSize="42" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="68"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Page>

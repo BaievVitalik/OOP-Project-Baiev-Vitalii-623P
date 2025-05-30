@@ -31,7 +31,7 @@ namespace OOP_KP_Baiev.Services
                                 else if (userObj.ContainsKey("Permissions"))
                                     userObj["UserType"] = "Admin";
                                 else
-                                    userObj["UserType"] = "Customer"; 
+                                    userObj["UserType"] = "Customer";
                                 updated = true;
                             }
                         }
@@ -47,9 +47,13 @@ namespace OOP_KP_Baiev.Services
                             Converters = { new UserJsonConverter() },
                             PropertyNameCaseInsensitive = true
                         };
-                        var jsonText = File.ReadAllText(UsersFilePath);
-                        Users = JsonSerializer.Deserialize<List<User>>(jsonText, options);
+
+                        Users = root
+                            .Select(node => JsonSerializer.Deserialize<User>(node.ToJsonString(), options))
+                            .Where(user => user != null)
+                            .ToList();
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -91,6 +95,11 @@ namespace OOP_KP_Baiev.Services
         {
             if (Users.Any(u => u.Login == user.Login || u.Email == user.Email))
                 return false;
+
+            if (string.IsNullOrWhiteSpace(user.AvatarPath))
+            {
+                user.AvatarPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Avatars", "default_avatar.png");
+            }
 
             Users.Add(user);
             SaveData();

@@ -1,0 +1,88 @@
+﻿<Page x:Class="OOP_KP_Baiev.Views.UserProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="UserProfilePage"
+      Background="Transparent">
+
+    <Grid>
+        <Border Width="900" Height="600" Background="White" CornerRadius="12" Padding="20"
+                VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.2" Color="Black"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Content="Назад" Click="GoToMain_Click" Background="#4CAF50" Foreground="White"
+                        Padding="8,5" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
+                        Width="120" HorizontalAlignment="Left">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <!--<Button x:Name="OfferJobButton"
+                        Content="Запропонувати роботу"
+                        Click="OfferJob_Click"
+                        Background="#2196F3"
+                        Foreground="White"
+                        Padding="8,5"
+                        FontWeight="SemiBold"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Width="160"
+                        HorizontalAlignment="Right"
+                        Visibility="Collapsed">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>-->
+                <DockPanel Grid.Row="1" LastChildFill="True" Margin="0,10,0,0">
+                    <Image x:Name="AvatarImage" Width="125" Height="125" Margin="0,0,30,0"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform"
+                           ClipToBounds="True" SnapsToDevicePixels="True" DockPanel.Dock="Left"/>
+                    <StackPanel>
+                        <TextBlock x:Name="ProfileTitleText" FontSize="26" FontWeight="Bold"
+                                   Margin="0,0,0,20" Foreground="#1F2937" HorizontalAlignment="Left"/>
+
+                        <TextBlock x:Name="FullNameText" FontSize="18" FontWeight="SemiBold" Foreground="#111827"/>
+
+                        <TextBlock Text="Логін:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="LoginText" FontSize="14" Foreground="#4B5563"/>
+
+                        <TextBlock Text="Роль:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="RoleText" FontSize="14" Foreground="#4B5563"/>
+
+                        <TextBlock Text="Дата народження:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="BirthDateText" FontSize="14" Foreground="#4B5563"/>
+
+                        <TextBlock Text="Країна та місто:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <TextBlock x:Name="LocationText" FontSize="14" Foreground="#4B5563"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="★ Рейтинг:" FontWeight="Bold" FontSize="14" Foreground="#374151"/>
+                        <TextBlock x:Name="RatingText" FontSize="14" Foreground="#F59E0B" Margin="5,0,0,0"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Опис:" FontWeight="Bold" FontSize="14" Foreground="#374151" Margin="0,10,0,0"/>
+                        <ScrollViewer Height="160" VerticalScrollBarVisibility="Hidden" Margin="0,2,0,0">
+                            <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" FontSize="14"
+                                       Foreground="#374151" Width="704"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

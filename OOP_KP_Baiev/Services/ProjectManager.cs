@@ -6,7 +6,7 @@ namespace OOP_KP_Baiev.Services
 {
     public static class ProjectManager
     {
-        private static readonly string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "projects.json"); // Уточнил путь
+        private static readonly string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "projects.json"); 
         public static List<Project> Projects { get; private set; } = new();
 
         static ProjectManager()
@@ -32,7 +32,7 @@ namespace OOP_KP_Baiev.Services
         public static void Save()
         {
             var directory = Path.GetDirectoryName(FilePath);
-            if (directory != null && !Directory.Exists(directory)) // Проверка на null для directory
+            if (directory != null && !Directory.Exists(directory)) 
             {
                 Directory.CreateDirectory(directory);
             }

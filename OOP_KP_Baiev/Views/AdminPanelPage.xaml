@@ -1,12 +1,215 @@
-﻿<Window x:Class="OOP_KP_Baiev.Views.AdminPanelPage"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OOP_KP_Baiev.Views"
-        mc:Ignorable="d"
-        Title="AdminPanelPage" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
-</Window>
+﻿<Page x:Class="OOP_KP_Baiev.Views.AdminPanelPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AdminPanelPage"
+      Background="#F5F5F5">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Border Width="Auto" MinWidth="650" MaxWidth="800" Background="White"
+                    CornerRadius="12"
+                    Padding="30"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Margin="20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <TextBlock Text="Панель адміністратора" FontSize="24" FontWeight="Bold" Margin="0 0 0 20" HorizontalAlignment="Center" Foreground="#333"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 20">
+                        <Button Content="Користувачі"
+                                Width="150" Height="35" Margin="5"
+                                FontSize="14"
+                                Background="#2196F3"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="ShowUsers_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="8" SnapsToDevicePixels="True">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Margin="10,5"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Button Content="Проєкти"
+                                Width="150" Height="35" Margin="5"
+                                FontSize="14"
+                                Background="#2196F3"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="ShowProjects_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="8" SnapsToDevicePixels="True">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Margin="10,5"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel x:Name="UsersPanel">
+                        <TextBlock Text="Список користувачів:"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#444"
+                                   Margin="0 10 0 10"/>
+
+                        <ListView x:Name="UsersList" BorderThickness="0">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Margin" Value="0 0 0 5"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA"
+                                            BorderBrush="#DDD"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="12"
+                                            Margin="0 0 0 5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Login}"
+                                                       FontSize="16"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#333"/>
+
+                                            <Button Grid.Column="1" Content="Редагувати"
+                                                    Click="EditUser_Click"
+                                                    Tag="{Binding Id}" Background="#4CAF50" 
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    Width="100"
+                                                    Height="30"
+                                                    Margin="5 0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5" SnapsToDevicePixels="True">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                            <Button Grid.Column="2" Content="Видалити"
+                                                    Click="DeleteUser_Click"
+                                                    Tag="{Binding Id}" Background="#f44336" Foreground="White"
+                                                    BorderThickness="0"
+                                                    Width="100"
+                                                    Height="30"
+                                                    Margin="5 0 0 0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5" SnapsToDevicePixels="True">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ProjectsPanel" Visibility="Collapsed">
+                        <TextBlock Text="Список проєктів:"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#444"
+                                   Margin="0 20 0 10"/>
+
+                        <ListView x:Name="ProjectsList" BorderThickness="0">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Margin" Value="0 0 0 5"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA"
+                                            BorderBrush="#DDD"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="12"
+                                            Margin="0 0 0 5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Title}"
+                                                       FontSize="16"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#333"/>
+                                            <Button Grid.Column="1" Content="Редагувати"
+                                                    Click="EditProject_Click"
+                                                    Tag="{Binding Id}" Background="#4CAF50" 
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    Width="100"
+                                                    Height="30"
+                                                    Margin="5 0"
+                                                    Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5" SnapsToDevicePixels="True">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                            <Button Grid.Column="2" Content="Видалити"
+                                                    Click="DeleteProject_Click"
+                                                    Tag="{Binding Id}"
+                                                    Background="#f44336" Foreground="White"
+                                                    BorderThickness="0" Width="100" Height="30"
+                                                    Margin="5 0 0 0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="5" SnapsToDevicePixels="True">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

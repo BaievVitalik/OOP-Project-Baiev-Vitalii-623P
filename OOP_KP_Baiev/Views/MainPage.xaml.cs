@@ -1,27 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OOP_KP_Baiev.Models;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace OOP_KP_Baiev.Views
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
-    public partial class MainPage : Window
+    public partial class MainPage : Page
     {
-        public MainPage()
+        private readonly Frame _frame;
+
+        public MainPage(Frame frame)
         {
             InitializeComponent();
+            _frame = frame;
+            CheckUserRole();
+        }
+
+        private void CheckUserRole()
+        {
+            var currentUser = App.Current.Properties["CurrentUser"] as User;
+            AdminPanelButton.Visibility = currentUser is Admin ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void GoToAdminPanel_Click(object sender, RoutedEventArgs e)
+        {
+            var adminWindow = new Window
+            {
+                Title = "Панель адміністратора",
+                Width = 850,
+                Height = 650,
+                Content = new AdminPanelPage(_frame),
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                MinHeight = 500,
+                MinWidth = 700
+            };
+            adminWindow.Show();
+        }
+
+        private void GoToMyProjects_Click(object sender, RoutedEventArgs e)
+        {
+            _frame?.Navigate(new MyProjectsPage(_frame));
+        }
+
+        private void GoToFreelancers_Click(object sender, RoutedEventArgs e)
+        {
+            _frame?.Navigate(new FreelancerListPage(_frame));
+        }
+
+        private void GoToProjects_Click(object sender, RoutedEventArgs e)
+        {
+            var currentUser = App.Current.Properties["CurrentUser"] as User;
+            if (currentUser != null)
+            {
+                _frame?.Navigate(new ProjectListPage(currentUser, _frame));
+            }
+            else
+            {
+                MessageBox.Show("Користувач не визначений. Будь ласка, увійдіть у систему ще раз.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GoToAccount_Click(object sender, RoutedEventArgs e)
+        {
+            _frame?.Navigate(new AccountPage(_frame));
         }
     }
 }

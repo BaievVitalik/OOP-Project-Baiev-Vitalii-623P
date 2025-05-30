@@ -1,27 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OOP_KP_Baiev.Models;
+using OOP_KP_Baiev.Services;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace OOP_KP_Baiev.Views
 {
-    /// <summary>
-    /// Interaction logic for FreelancerListPage.xaml
-    /// </summary>
-    public partial class FreelancerListPage : Window
+    public partial class FreelancerListPage : Page
     {
-        public FreelancerListPage()
+        private readonly Frame _frame;
+
+        public FreelancerListPage(Frame frame)
         {
             InitializeComponent();
+            _frame = frame;
+            LoadFreelancers();
+        }
+
+        private void GoToMain_Click(object sender, RoutedEventArgs e)
+        {
+            _frame.Navigate(new MainPage(_frame)); // MainPage должна принимать Frame
+        }
+
+        private void LoadFreelancers()
+        {
+            var freelancers = AccountManager.Users.OfType<Freelancer>().ToList();
+            FreelancerList.ItemsSource = freelancers;
         }
     }
 }

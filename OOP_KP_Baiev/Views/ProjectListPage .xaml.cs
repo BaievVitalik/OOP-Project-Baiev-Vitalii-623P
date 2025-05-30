@@ -1,27 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OOP_KP_Baiev.Models;
+using OOP_KP_Baiev.Services;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace OOP_KP_Baiev.Views
 {
-    /// <summary>
-    /// Interaction logic for ProjectListPage.xaml
-    /// </summary>
-    public partial class ProjectListPage : Window
+    public partial class ProjectListPage : Page
     {
-        public ProjectListPage()
+        private readonly Frame _frame;
+        private readonly User _user;
+
+        public ProjectListPage(User user, Frame frame)
         {
             InitializeComponent();
+            _user = user;
+            _frame = frame;
+            if (_user is Freelancer)
+            {
+                CreateButton.Visibility = Visibility.Collapsed;
+            }
+
+            LoadProjects();
+        }
+
+        private void LoadProjects()
+        {
+            ProjectManager.Load(); 
+            List<Project> allProjects = ProjectManager.Projects;
+            ProjectList.ItemsSource = null;            
+            ProjectList.ItemsSource = allProjects;       
+        }
+        private void CreateProject_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new CreateProjectPage(_frame));
+        }
+
+        private void GoToMain_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new MainPage(_frame));
         }
     }
 }

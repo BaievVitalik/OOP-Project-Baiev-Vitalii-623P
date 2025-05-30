@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OOP_KP_Baiev.Interfaces
+﻿namespace OOP_KP_Baiev.Interfaces
 {
-    class IEditableProfile
+    public interface IEditableProfile
     {
+        string FirstName { get; set; }
+        string LastName { get; set; }
+        DateTime? BirthDate { get; set; }
+        string Country { get; set; }
+        string City { get; set; }
+        string Description { get; set; }
+        string AvatarPath { get; set; }
     }
 }

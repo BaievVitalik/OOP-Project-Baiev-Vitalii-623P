@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OOP_KP_Baiev"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Freelance Exchange"
+        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
+        MinWidth="1000"
+        MinHeight="600">
 
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Resources/background.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

@@ -39,7 +39,7 @@ namespace OOP_KP_Baiev.Views
             RoleText.Text = _user.UserType();
 
             BirthDateText.Text = _user.BirthDate.HasValue
-                ? _user.BirthDate.Value.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("uk-UA")) // добавил yyyy для полноты
+                ? _user.BirthDate.Value.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("uk-UA")) 
                 : "Не вказано";
 
             string country = string.IsNullOrWhiteSpace(_user.Country) ? "" : _user.Country;

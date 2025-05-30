@@ -85,7 +85,7 @@ namespace OOP_KP_Baiev.Views
             if (textBox.Text.Length == 2 && !textBox.Text.Contains("/"))
             {
                 textBox.Text += "/";
-                textBox.CaretIndex = textBox.Text.Length; // Переместить курсор в конец
+                textBox.CaretIndex = textBox.Text.Length;
             }
         }
         private void FundsTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

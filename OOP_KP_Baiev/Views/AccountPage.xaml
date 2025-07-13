@@ -96,7 +96,7 @@
 
                         <Button Content="Редагувати профіль"
                 Click="EditProfile_Click"
-                Background="#2196F3"
+                Background="#2194F3"
                 Foreground="White"
                 Padding="10"
                 FontWeight="SemiBold"

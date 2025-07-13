@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 public abstract class User : IIdentifiable, IEditableProfile
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid(); // Айді користувачів
     public string Login { get; set; }
     public string Password { get; set; } = string.Empty;
     public string Email { get; set; }

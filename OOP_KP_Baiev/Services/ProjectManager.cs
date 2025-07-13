@@ -9,7 +9,7 @@ namespace OOP_KP_Baiev.Services
         private static readonly string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "projects.json"); 
         public static List<Project> Projects { get; private set; } = new();
 
-        static ProjectManager()
+        static ProjectManager()  // Завантаження даних при першому використанні
         {
             Load();
         }

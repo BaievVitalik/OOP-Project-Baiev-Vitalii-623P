@@ -4,7 +4,7 @@ namespace OOP_KP_Baiev.Models
 {
     public class Project : IIdentifiable
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid(); // Айді проєкта
         public string Title { get; set; }
         public string Description { get; set; }
         public Guid CustomerId { get; set; } 
